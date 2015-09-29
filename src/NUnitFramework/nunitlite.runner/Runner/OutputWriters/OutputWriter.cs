@@ -41,7 +41,7 @@ namespace NUnitLite.Runner
         /// <param name="outputPath">Path to the file to which the result is written</param>
         public void WriteResultFile(ITestResult result, string outputPath)
         {
-            using (StreamWriter writer = new StreamWriter(outputPath, false, Encoding.UTF8))
+            using (StreamWriter writer = new StreamWriter(File.Open(outputPath, FileMode.CreateNew), Encoding.UTF8))
             {
                 WriteResultFile(result, writer);
             }
@@ -54,7 +54,7 @@ namespace NUnitLite.Runner
         /// <param name="outputPath">Path to the file to which the test info is written</param>
         public void WriteTestFile(ITest test, string outputPath)
         {
-            using (StreamWriter writer = new StreamWriter(outputPath, false, Encoding.UTF8))
+            using (StreamWriter writer = new StreamWriter(File.Open(outputPath, FileMode.CreateNew), Encoding.UTF8))
             {
                 WriteTestFile(test, writer);
             }

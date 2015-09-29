@@ -133,8 +133,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+#if !FEATURE_LEGACY_REFLECTION
+using System.Reflection;
+#endif
 using System.Runtime.Serialization;
+#if !NETCORE
 using System.Security.Permissions;
+#endif
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -162,13 +167,13 @@ namespace Mono.Options
             this.c = c;
         }
 
-        #region ICollection
+#region ICollection
         void ICollection.CopyTo (Array array, int index)  {(values as ICollection).CopyTo (array, index);}
         bool ICollection.IsSynchronized                   {get {return (values as ICollection).IsSynchronized;}}
         object ICollection.SyncRoot                       {get {return (values as ICollection).SyncRoot;}}
-        #endregion
+#endregion
 
-        #region ICollection<T>
+#region ICollection<T>
         public void Add (string item)                       {values.Add (item);}
         public void Clear ()                                {values.Clear ();}
         public bool Contains (string item)                  {return values.Contains (item);}
@@ -176,17 +181,17 @@ namespace Mono.Options
         public bool Remove (string item)                    {return values.Remove (item);}
         public int Count                                    {get {return values.Count;}}
         public bool IsReadOnly                              {get {return false;}}
-        #endregion
+#endregion
 
-        #region IEnumerable
+#region IEnumerable
         IEnumerator IEnumerable.GetEnumerator () {return values.GetEnumerator ();}
-        #endregion
+#endregion
 
-        #region IEnumerable<T>
+#region IEnumerable<T>
         public IEnumerator<string> GetEnumerator () {return values.GetEnumerator ();}
-        #endregion
+#endregion
 
-        #region IList
+#region IList
         int IList.Add (object value)                {return (values as IList).Add (value);}
         bool IList.Contains (object value)          {return (values as IList).Contains (value);}
         int IList.IndexOf (object value)            {return (values as IList).IndexOf (value);}
@@ -195,9 +200,9 @@ namespace Mono.Options
         void IList.RemoveAt (int index)             {(values as IList).RemoveAt (index);}
         bool IList.IsFixedSize                      {get {return false;}}
         object IList.this [int index]               {get {return this [index];} set {(values as IList)[index] = value;}}
-        #endregion
+#endregion
 
-        #region IList<T>
+#region IList<T>
         public int IndexOf (string item)            {return values.IndexOf (item);}
         public void Insert (int index, string item) {values.Insert (index, item);}
         public void RemoveAt (int index)            {values.RemoveAt (index);}
@@ -224,7 +229,7 @@ namespace Mono.Options
                 values [index] = value;
             }
         }
-        #endregion
+#endregion
 
         public List<string> ToList ()
         {
@@ -348,19 +353,23 @@ namespace Mono.Options
 
         protected static T Parse<T> (string value, OptionContext c)
         {
+#if FEATURE_LEGACY_REFLECTION
             Type tt = typeof (T);
+#else
+            TypeInfo tt = typeof(T).GetTypeInfo();
+#endif
             bool nullable = tt.IsValueType && tt.IsGenericType && 
                 !tt.IsGenericTypeDefinition && 
                 tt.GetGenericTypeDefinition () == typeof (Nullable<>);
-            Type targetType = nullable ? tt.GetGenericArguments () [0] : typeof (T);
-#if !NETCF && !SILVERLIGHT && !PORTABLE
+            Type targetType = nullable ? typeof(T).GetGenericArguments () [0] : typeof (T);
+#if !NETCF && !SILVERLIGHT && !PORTABLE && !NETCORE
             TypeConverter conv = TypeDescriptor.GetConverter (targetType);
 #endif
             T t = default (T);
             try {
                 if (value != null)
-#if NETCF || SILVERLIGHT || PORTABLE
-                    t = (T)Convert.ChangeType(value, tt, CultureInfo.InvariantCulture);
+#if NETCF || SILVERLIGHT || PORTABLE || NETCORE
+                    t = (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
 #else
                     t = (T) conv.ConvertFromString (value);
 #endif
@@ -523,6 +532,7 @@ namespace Mono.Options
         {
         }
 
+#if !NETCORE
         public OptionSet (Converter<string, string> localizer)
         {
             this.localizer = localizer;
@@ -533,7 +543,19 @@ namespace Mono.Options
         public Converter<string, string> MessageLocalizer {
             get {return localizer;}
         }
+#else
+        public OptionSet(Func<string, string> localizer)
+        {
+            this.localizer = localizer;
+        }
 
+        Func<string, string> localizer;
+
+        public Func<string, string> MessageLocalizer
+        {
+            get { return localizer; }
+        }
+#endif
         protected override string GetKeyForItem (Option item)
         {
             if (item == null)

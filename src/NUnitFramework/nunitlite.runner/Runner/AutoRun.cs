@@ -64,14 +64,14 @@ namespace NUnitLite.Runner
             ExtendedTextWriter outWriter = null;
             if (options.OutFile != null)
             {
-                outWriter = new ExtendedTextWrapper(new StreamWriter(Path.Combine(options.WorkDirectory, options.OutFile)));
+                outWriter = new ExtendedTextWrapper(new StreamWriter(File.OpenWrite(Path.Combine(options.WorkDirectory, options.OutFile))));
                 Console.SetOut(outWriter);
             }
 
             TextWriter errWriter = null;
             if (options.ErrFile != null)
             {
-                errWriter = new StreamWriter(Path.Combine(options.WorkDirectory, options.ErrFile));
+                errWriter = new StreamWriter(File.OpenWrite(Path.Combine(options.WorkDirectory, options.ErrFile)));
                 Console.SetError(errWriter);
             }
 
@@ -130,7 +130,7 @@ namespace NUnitLite.Runner
         {
             if (traceLevel != InternalTraceLevel.Off)
             {
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETCORE
                 var logName = string.Format(LOG_FILE_FORMAT, Process.GetCurrentProcess().Id, Path.GetFileName(assemblyPath));
 #else
                 var logName = string.Format(LOG_FILE_FORMAT, DateTime.Now.ToString("o"), Path.GetFileName(assemblyPath));

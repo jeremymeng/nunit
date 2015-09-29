@@ -75,6 +75,7 @@ namespace NUnit.Common
             get { return _writer.Encoding; }
         }
 
+#if !NETCORE
         /// <summary>
         /// Close the ExtendedTextWriter
         /// </summary>
@@ -82,7 +83,7 @@ namespace NUnit.Common
         {
             _writer.Close();
         }
-
+#endif
         /// <summary>
         /// Dispose the Extended TextWriter
         /// </summary>

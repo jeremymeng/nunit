@@ -288,7 +288,7 @@ namespace NUnit.Common
                     {
                         try
                         {
-                            using (var rdr = new StreamReader(fullTestListPath))
+                            using (var rdr = new StreamReader(File.OpenRead(fullTestListPath)))
                             {
                                 while (!rdr.EndOfStream)
                                 {
