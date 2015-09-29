@@ -52,13 +52,24 @@ namespace NUnitLite.Runner
         public int Execute(string[] args)
         {
             var options = new ConsoleOptions(args);
+#if !NETCORE
             var callingAssembly = Assembly.GetCallingAssembly();
+            var locatoin = callingAssembly.Location;
+#else
+            var callingAssembly = (Assembly)typeof(Assembly).GetTypeInfo()
+                .GetDeclaredMethod("GetCallingAssembly")
+                .Invoke(null, new object[0]);
+            var location = (string)typeof(Assembly).GetTypeInfo()
+                .GetDeclaredProperty("Location")
+                .GetGetMethod()
+                .Invoke(callingAssembly, new object[0]);
+#endif
 
             var level = (InternalTraceLevel)Enum.Parse(typeof(InternalTraceLevel), options.InternalTraceLevel ?? "Off", true);
 #if NETCF  // NETCF: Try to unify
             InitializeInternalTrace(callingAssembly.GetName().CodeBase, level);
 #else
-            InitializeInternalTrace(callingAssembly.Location, level);
+            InitializeInternalTrace(location, level);
 #endif
 
             ExtendedTextWriter outWriter = null;
@@ -119,10 +130,10 @@ namespace NUnitLite.Runner
                     _textUI.WaitForUser("Press Enter key to continue . . .");
 
                 if (outWriter != null)
-                    outWriter.Close();
+                    outWriter.Dispose();
 
                 if (errWriter != null)
-                    errWriter.Close();
+                    errWriter.Dispose();
             }
         }
 
@@ -142,13 +153,17 @@ namespace NUnitLite.Runner
                 StreamWriter streamWriter = null;
                 if (traceLevel > InternalTraceLevel.Off)
                 {
+#if !NETCORE
                     string logPath = Path.Combine(Environment.CurrentDirectory, logName);
+#else
+                    string logPath = Path.Combine(Directory.GetCurrentDirectory(), logName);
+#endif
                     streamWriter = new StreamWriter(new FileStream(logPath, FileMode.Append, FileAccess.Write, FileShare.Write));
                     streamWriter.AutoFlush = true;
                 }
                 InternalTrace.Initialize(streamWriter, traceLevel);
 #endif
-            }
+                }
         }
     }
 }

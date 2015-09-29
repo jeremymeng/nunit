@@ -121,16 +121,28 @@ namespace NUnitLite.Runner
         {
             xmlWriter.WriteStartElement("environment");
 
+#if FEATURE_LEGACY_REFLECTION
             Assembly assembly = Assembly.GetExecutingAssembly();
+#else
+            Assembly assembly = typeof(NUnit3XmlOutputWriter).GetTypeInfo().Assembly;
+#endif
             AssemblyName assemblyName = AssemblyHelper.GetAssemblyName(assembly);
             xmlWriter.WriteAttributeString("nunit-version", assemblyName.Version.ToString());
 
+#if !NETCORE
             xmlWriter.WriteAttributeString("clr-version", Environment.Version.ToString());
             xmlWriter.WriteAttributeString("os-version", Environment.OSVersion.ToString());
             xmlWriter.WriteAttributeString("platform", Environment.OSVersion.Platform.ToString());
+#endif
 #if !NETCF
-            xmlWriter.WriteAttributeString("cwd", Environment.CurrentDirectory);
-#if !SILVERLIGHT
+            xmlWriter.WriteAttributeString("cwd",
+#if !NETCORE
+                Environment.CurrentDirectory
+#else
+                Directory.GetCurrentDirectory()
+#endif
+                );
+#if !SILVERLIGHT && !NETCORE
             xmlWriter.WriteAttributeString("machine-name", Environment.MachineName);
             xmlWriter.WriteAttributeString("user", Environment.UserName);
             xmlWriter.WriteAttributeString("user-domain", Environment.UserDomainName);
@@ -147,7 +159,11 @@ namespace NUnitLite.Runner
             xmlWriter.WriteEndElement(); // test-run
             xmlWriter.WriteEndDocument();
             xmlWriter.Flush();
+#if !NETCORE
             xmlWriter.Close();
+#else
+            xmlWriter.Dispose();
+#endif
         }
     }
 }

@@ -106,7 +106,14 @@ namespace NUnitLite.Runner
         /// </returns>
         public override System.Text.Encoding Encoding
         {
-            get { return System.Text.Encoding.Default; }
+            get
+            {
+#if !NETCORE
+                return System.Text.Encoding.Default;
+#else
+                return System.Text.Encoding.GetEncoding(0);
+#endif
+            }
         }
     }
 }

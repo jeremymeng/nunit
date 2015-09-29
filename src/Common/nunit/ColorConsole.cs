@@ -36,12 +36,12 @@ namespace NUnit.Common
         /// <param name="style">The color style to use.</param>
         public ColorConsole(ColorStyle style)
         {
-#if !SILVERLIGHT && !NETCF
+#if !SILVERLIGHT && !NETCF && !NETCORE
             Console.ForegroundColor = GetColor(style);
 #endif
         }
 
-#if !SILVERLIGHT && !NETCF
+#if !SILVERLIGHT && !NETCF && !NETCORE
         /// <summary>
         /// By using styles, we can keep everything consistent
         /// </summary>
@@ -151,7 +151,7 @@ namespace NUnit.Common
         /// </summary>
         public void Dispose()
         {
-#if !SILVERLIGHT && !NETCF
+#if !SILVERLIGHT && !NETCF && !NETCORE
             Console.ResetColor();
 #endif
         }

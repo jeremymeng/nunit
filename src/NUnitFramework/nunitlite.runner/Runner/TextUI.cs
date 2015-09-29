@@ -67,20 +67,31 @@ namespace NUnitLite.Runner
         /// </summary>
         public void DisplayHeader()
         {
+#if FEATURE_LEGACY_REFLECTION
             Assembly executingAssembly = Assembly.GetExecutingAssembly();
+#else
+            Assembly executingAssembly = typeof(TextUI).GetTypeInfo().Assembly;
+#endif
             AssemblyName assemblyName = AssemblyHelper.GetAssemblyName(executingAssembly);
             Version version = assemblyName.Version;
             string copyright = "Copyright (C) 2015, Charlie Poole";
             string build = "";
-
+#if FEATURE_LEGACY_REFLECTION
             object[] attrs = executingAssembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+#else
+            object[] attrs = System.Linq.Enumerable.ToArray(executingAssembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute)));
+#endif
             if (attrs.Length > 0)
             {
                 var copyrightAttr = (AssemblyCopyrightAttribute)attrs[0];
                 copyright = copyrightAttr.Copyright;
             }
 
+#if FEATURE_LEGACY_REFLECTION
             attrs = executingAssembly.GetCustomAttributes(typeof(AssemblyConfigurationAttribute), false);
+#else
+            attrs = System.Linq.Enumerable.ToArray(executingAssembly.GetCustomAttributes(typeof(AssemblyConfigurationAttribute)));
+#endif
             if (attrs.Length > 0)
             {
                 var configAttr = (AssemblyConfigurationAttribute)attrs[0];
@@ -92,9 +103,9 @@ namespace NUnitLite.Runner
             SkipLine();
         }
 
-        #endregion
+#endregion
 
-        #region DisplayTestFiles
+#region DisplayTestFiles
 
         public void DisplayTestFiles(string[] testFiles)
         {
@@ -106,9 +117,9 @@ namespace NUnitLite.Runner
             SkipLine();
         }
 
-        #endregion
+#endregion
 
-        #region DisplayHelp
+#region DisplayHelp
 
 #if !SILVERLIGHT
         public void DisplayHelp()
@@ -168,9 +179,9 @@ namespace NUnitLite.Runner
         }
 #endif
 
-        #endregion
+#endregion
 
-        #region DisplayRequestedOptions
+#region DisplayRequestedOptions
 
 #if !SILVERLIGHT
         public void DisplayRequestedOptions()
@@ -211,9 +222,9 @@ namespace NUnitLite.Runner
         }
 #endif
 
-        #endregion
+#endregion
 
-        #region DisplayRuntimeEnvironment
+#region DisplayRuntimeEnvironment
 
         /// <summary>
         /// Displays info about the runtime environment.
@@ -221,14 +232,16 @@ namespace NUnitLite.Runner
         public void DisplayRuntimeEnvironment()
         {
             WriteSectionHeader("Runtime Environment");
+#if !NETCORE
             WriteLabelLine("   OS Version: ", Environment.OSVersion);
             WriteLabelLine("  CLR Version: ", Environment.Version);
+#endif
             SkipLine();
         }
 
-        #endregion
+#endregion
 
-        #region TestFinished
+#region TestFinished
 
         private bool _testCreatedOutput = false;
 
@@ -240,10 +253,14 @@ namespace NUnitLite.Runner
 
 #if !SILVERLIGHT
             if (_options.DisplayTestLabels != null)
+#if !NETCORE
                 labels = _options.DisplayTestLabels.ToUpper(CultureInfo.InvariantCulture);
+#else
+                labels = CultureInfo.CurrentCulture.TextInfo.ToUpper(_options.DisplayTestLabels);
+#endif
 #endif
 
-            if (!isSuite && labels == "ALL" || !isSuite && labels == "ON" && result.Output.Length > 0)
+                if (!isSuite && labels == "ALL" || !isSuite && labels == "ON" && result.Output.Length > 0)
             {
                 _outWriter.WriteLine(ColorStyle.SectionHeader, "=> " + result.Test.Name);
                 _testCreatedOutput = true;
@@ -258,9 +275,9 @@ namespace NUnitLite.Runner
             }
         }
 
-        #endregion
+#endregion
 
-        #region WaitForUser
+#region WaitForUser
 
 #if !SILVERLIGHT
         public void WaitForUser(string message)
@@ -274,11 +291,11 @@ namespace NUnitLite.Runner
         }
 #endif
 
-        #endregion
+#endregion
 
-        #region Test Result Reports
+#region Test Result Reports
 
-        #region DisplaySummaryReport
+#region DisplaySummaryReport
 
         public void DisplaySummaryReport(ResultSummary summary)
         {
@@ -332,9 +349,9 @@ namespace NUnitLite.Runner
             _outWriter.WriteLabel(label, count.ToString(CultureInfo.CurrentUICulture), count > 0 ? color : ColorStyle.Value);
         }
 
-        #endregion
+#endregion
 
-        #region DisplayErrorsAndFailuresReport
+#region DisplayErrorsAndFailuresReport
 
         public void DisplayErrorsAndFailuresReport(ITestResult result)
         {
@@ -352,9 +369,9 @@ namespace NUnitLite.Runner
 #endif
         }
 
-        #endregion
+#endregion
 
-        #region DisplayNotRunReport
+#region DisplayNotRunReport
 
         public void DisplayNotRunReport(ITestResult result)
         {
@@ -366,9 +383,9 @@ namespace NUnitLite.Runner
             SkipLine();
         }
 
-        #endregion
+#endregion
 
-        #region DisplayFullReport
+#region DisplayFullReport
 
 #if FULL    // Not currently used, but may be reactivated
         /// <summary>
@@ -385,29 +402,29 @@ namespace NUnitLite.Runner
         }
 #endif
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
-        #region DisplayWarning
+#region DisplayWarning
 
         public void DisplayWarning(string text)
         {
             WriteLine(ColorStyle.Warning, text);
         }
 
-        #endregion
+#endregion
 
-        #region DisplayError
+#region DisplayError
 
         public void DisplayError(string text)
         {
             WriteLine(ColorStyle.Error, text);
         }
 
-        #endregion
+#endregion
 
-        #region DisplayErrors
+#region DisplayErrors
 
         public void DisplayErrors(IList<string> messages)
         {
@@ -415,11 +432,11 @@ namespace NUnitLite.Runner
                 DisplayError(message);
         }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
-        #region Helper Methods
+#region Helper Methods
 
         private void DisplayErrorsAndFailures(ITestResult result)
         {
@@ -577,6 +594,6 @@ namespace NUnitLite.Runner
             _outWriter.WriteLine();
         }
 
-        #endregion
+#endregion
     }
 }

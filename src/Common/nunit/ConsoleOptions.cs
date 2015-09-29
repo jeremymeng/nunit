@@ -205,7 +205,7 @@ namespace NUnit.Common
                 isValid = false;
 
                 foreach (string valid in validValues)
-                    if (string.Compare(valid, val, StringComparison.InvariantCultureIgnoreCase) == 0)
+                    if (string.Compare(valid, val, StringComparison.OrdinalIgnoreCase) == 0)
                         return valid;
 
             }

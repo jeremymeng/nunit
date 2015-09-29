@@ -61,7 +61,7 @@ namespace NUnitLite.Runner
             // NOTE: Under .NET 1.1, XmlTextWriter does not implement IDisposable,
             // but does implement Close(). Hence we cannot use a 'using' clause.
             //using (XmlTextWriter xmlWriter = new XmlTextWriter(writer))
-#if SILVERLIGHT
+#if SILVERLIGHT || NETCORE
             XmlWriter xmlWriter = XmlWriter.Create(writer);
 #else
             XmlTextWriter xmlWriter = new XmlTextWriter(writer);
@@ -74,7 +74,7 @@ namespace NUnitLite.Runner
             }
             finally
             {
-                writer.Close();
+                writer.Dispose();
             }
         }
 
@@ -126,19 +126,30 @@ namespace NUnitLite.Runner
         private void WriteEnvironment()
         {
             xmlWriter.WriteStartElement("environment");
+#if FEATURE_LEGACY_REFLECTION
             var assemblyName = AssemblyHelper.GetAssemblyName(Assembly.GetExecutingAssembly());
+#else
+            var assemblyName = AssemblyHelper.GetAssemblyName(typeof(NUnit2XmlOutputWriter).GetTypeInfo().Assembly);
+#endif
             xmlWriter.WriteAttributeString("nunit-version",
                                            assemblyName.Version.ToString());
+#if !NETCORE
             xmlWriter.WriteAttributeString("clr-version",
                                            Environment.Version.ToString());
             xmlWriter.WriteAttributeString("os-version",
                                            Environment.OSVersion.ToString());
             xmlWriter.WriteAttributeString("platform",
                 Environment.OSVersion.Platform.ToString());
+#endif
 #if !NETCF
             xmlWriter.WriteAttributeString("cwd",
-                                           Environment.CurrentDirectory);
-#if !SILVERLIGHT
+#if !NETCORE
+                                           Environment.CurrentDirectory
+#else
+                                           Directory.GetCurrentDirectory()
+#endif
+                                           );
+#if !SILVERLIGHT && !NETCORE
             xmlWriter.WriteAttributeString("machine-name",
                                            Environment.MachineName);
             xmlWriter.WriteAttributeString("user",
@@ -178,11 +189,15 @@ namespace NUnitLite.Runner
             xmlWriter.WriteEndElement(); // test-results
             xmlWriter.WriteEndDocument();
             xmlWriter.Flush();
+#if !NETCORE
             xmlWriter.Close();
+#else
+            xmlWriter.Dispose();
+#endif
         }
 
 
-        #region Element Creation Helpers
+#region Element Creation Helpers
 
         private void StartTestElement(ITestResult result)
         {
@@ -335,9 +350,9 @@ namespace NUnitLite.Runner
             xmlWriter.WriteEndElement();
         }
 
-        #endregion
+#endregion
 
-        #region Output Helpers
+#region Output Helpers
         ///// <summary>
         ///// Makes string safe for xml parsing, replacing control chars with '?'
         ///// </summary>
@@ -391,6 +406,6 @@ namespace NUnitLite.Runner
                 xmlWriter.WriteCData(text);
         }
 
-        #endregion
+#endregion
     }
 }
