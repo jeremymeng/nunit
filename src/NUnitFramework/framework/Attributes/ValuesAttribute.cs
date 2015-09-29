@@ -23,6 +23,9 @@
 
 using System;
 using System.Collections;
+#if !FEATURE_LEGACY_REFLECTION
+using System.Reflection;
+#endif
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 
@@ -100,7 +103,12 @@ namespace NUnit.Framework
         {
             Type targetType = parameter.ParameterType;
 
-            if (targetType.IsEnum && data.Length == 0)
+#if FEATURE_LEGACY_REFLECTION
+            if (targetType.IsEnum &&
+#else
+            if (targetType.GetTypeInfo().IsEnum &&
+#endif 
+                data.Length == 0)
             {
                 return TypeHelper.GetEnumValues(targetType);
             }

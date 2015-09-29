@@ -92,7 +92,11 @@ namespace NUnit.Framework.Internal
 
             var actions = new List<ITestAction>();
 
+#if FEATURE_LEGACY_REFLECTION
             actions.AddRange(GetActionsFromTypesAttributes(type.BaseType));
+#else
+            actions.AddRange(GetActionsFromTypesAttributes(type.GetTypeInfo().BaseType));
+#endif
 
             Type[] declaredInterfaces = GetDeclaredInterfaces(type);
 
@@ -108,10 +112,17 @@ namespace NUnit.Framework.Internal
         {
             List<Type> interfaces = new List<Type>(type.GetInterfaces());
 
+#if FEATURE_LEGACY_REFLECTION
             if (type.BaseType == typeof(object))
                 return interfaces.ToArray();
 
             List<Type> baseInterfaces = new List<Type>(type.BaseType.GetInterfaces());
+#else
+            if (type.GetTypeInfo().BaseType == typeof(object))
+                return interfaces.ToArray();
+
+            List<Type> baseInterfaces = new List<Type>(type.GetTypeInfo().BaseType.GetInterfaces());
+#endif
             List<Type> declaredInterfaces = new List<Type>();
 
             foreach (Type interfaceType in interfaces)

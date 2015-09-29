@@ -145,8 +145,13 @@ namespace NUnit.Framework.Constraints
             Type xType = x.GetType();
             Type yType = y.GetType();
 
+#if FEATURE_LEGACY_REFLECTION
             Type xGenericTypeDefinition = xType.IsGenericType ? xType.GetGenericTypeDefinition() : null;
             Type yGenericTypeDefinition = yType.IsGenericType ? yType.GetGenericTypeDefinition() : null;
+#else
+            Type xGenericTypeDefinition = xType.GetTypeInfo().IsGenericType ? xType.GetGenericTypeDefinition() : null;
+            Type yGenericTypeDefinition = yType.GetTypeInfo().IsGenericType ? yType.GetGenericTypeDefinition() : null;
+#endif
 
             EqualityAdapter externalComparer = GetExternalComparer(x, y);
             if (externalComparer != null)
@@ -261,7 +266,12 @@ namespace NUnit.Framework.Constraints
 
             foreach (Type @interface in type.GetInterfaces())
             {
-                if (@interface.IsGenericType && @interface.GetGenericTypeDefinition().Equals(typeof(IEquatable<>)))
+#if FEATURE_LEGACY_REFLECTION
+                if (@interface.IsGenericType &&
+#else
+                if (@interface.GetTypeInfo().IsGenericType &&
+#endif
+                    @interface.GetGenericTypeDefinition().Equals(typeof(IEquatable<>)))
                 {
                     genericArgs.Add(@interface.GetGenericArguments()[0]);
                 }
@@ -296,9 +306,9 @@ namespace NUnit.Framework.Constraints
             return null;
         }
         
-        #endregion
+#endregion
 
-        #region Helper Methods
+#region Helper Methods
 
         private EqualityAdapter GetExternalComparer(object x, object y)
         {
@@ -536,9 +546,9 @@ namespace NUnit.Framework.Constraints
             return true;
         }
         
-        #endregion
+#endregion
 
-        #region Nested FailurePoint Class
+#region Nested FailurePoint Class
 
         /// <summary>
         /// FailurePoint class represents one point of failure
@@ -572,6 +582,6 @@ namespace NUnit.Framework.Constraints
             public bool ActualHasData;
         }
 
-        #endregion
+#endregion
     }
 }

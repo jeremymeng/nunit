@@ -89,7 +89,11 @@ namespace NUnit.Framework.Internal
             {
                 ApplyArgType(parmType, argType);
             }
+#if FEATURE_LEGACY_REFLECTION
             else if (parmType.ContainsGenericParameters)
+#else
+            else if (parmType.GetTypeInfo().ContainsGenericParameters)
+#endif
             {
                 var genericArgTypes = parmType.GetGenericArguments();
 
@@ -97,7 +101,12 @@ namespace NUnit.Framework.Internal
                 {
                     ApplyArgType(genericArgTypes[0], argType.GetElementType());
                 }
-                else if (argType.IsGenericType && IsAssignableToGenericType(argType, parmType))
+#if FEATURE_LEGACY_REFLECTION
+                else if (argType.IsGenericType &&
+#else
+                else if (argType.GetTypeInfo().IsGenericType &&
+#endif
+                    IsAssignableToGenericType(argType, parmType))
                 {
                     Type[] argTypes = argType.GetGenericArguments();
 
@@ -126,7 +135,11 @@ namespace NUnit.Framework.Internal
 
             foreach (var iterator in interfaceTypes)
             {
+#if FEATURE_LEGACY_REFLECTION
                 if (iterator.IsGenericType)
+#else
+                if (iterator.GetTypeInfo().IsGenericType)
+#endif
                 {
                     // The Type returned by GetGenericTyeDefinition may have the
                     // FullName set to null, so we do our own comparison
@@ -136,7 +149,11 @@ namespace NUnit.Framework.Internal
                 }
             }
 
+#if FEATURE_LEGACY_REFLECTION
             if (givenType.IsGenericType)
+#else
+            if (givenType.GetTypeInfo().IsGenericType)
+#endif
             {
                 // The Type returned by GetGenericTyeDefinition may have the
                 // FullName set to null, so we do our own comparison
@@ -145,7 +162,11 @@ namespace NUnit.Framework.Internal
                     return true;
             }
 
+#if FEATURE_LEGACY_REFLECTION
             Type baseType = givenType.BaseType;
+#else
+            Type baseType = givenType.GetTypeInfo().BaseType;
+#endif
             if (baseType == null)
                 return false;
 

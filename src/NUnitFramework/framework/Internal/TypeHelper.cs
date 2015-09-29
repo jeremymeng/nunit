@@ -60,7 +60,11 @@ namespace NUnit.Framework.Internal
             if (type.IsGenericParameter)
                 return type.Name;
 
+#if FEATURE_LEGACY_REFLECTION
             if (type.IsGenericType)
+#else
+            if (type.GetTypeInfo().IsGenericType)
+#endif
             {
                 string name = type.FullName;
                 int index = name.IndexOf('[');

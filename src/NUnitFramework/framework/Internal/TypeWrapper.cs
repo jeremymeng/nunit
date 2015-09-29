@@ -56,7 +56,11 @@ namespace NUnit.Framework.Internal
         {
             get 
             {
+#if FEATURE_LEGACY_REFLECTION
                 var baseType = Type.BaseType;
+#else
+                var baseType = Type.GetTypeInfo().BaseType;
+#endif
 
                 return baseType != null
                     ? new TypeWrapper(baseType)
@@ -85,7 +89,11 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public Assembly Assembly
         {
+#if FEATURE_LEGACY_REFLECTION
             get { return Type.Assembly; }
+#else
+            get { return Type.GetTypeInfo().Assembly; }
+#endif
         }
 
         /// <summary>
@@ -101,7 +109,11 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public bool IsAbstract
         {
+#if FEATURE_LEGACY_REFLECTION
             get { return Type.IsAbstract; }
+#else
+            get { return Type.GetTypeInfo().IsAbstract; }
+#endif
         }
 
         /// <summary>
@@ -109,7 +121,11 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public bool IsGenericType
         {
+#if FEATURE_LEGACY_REFLECTION
             get { return Type.IsGenericType; }
+#else
+            get { return Type.GetTypeInfo().IsGenericType; }
+#endif
         }
 
         /// <summary>
@@ -125,7 +141,11 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public bool ContainsGenericParameters
         {
+#if FEATURE_LEGACY_REFLECTION
             get { return Type.ContainsGenericParameters; }
+#else
+            get { return Type.GetTypeInfo().ContainsGenericParameters; }
+#endif
         }
 
         /// <summary>
@@ -133,7 +153,11 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public bool IsGenericTypeDefinition
         {
+#if FEATURE_LEGACY_REFLECTION
             get { return Type.IsGenericTypeDefinition; }
+#else
+            get { return Type.GetTypeInfo().IsGenericTypeDefinition; }
+#endif
         }
 
         /// <summary>
@@ -141,7 +165,11 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public bool IsSealed
         {
+#if FEATURE_LEGACY_REFLECTION
             get { return Type.IsSealed; }
+#else
+            get { return Type.GetTypeInfo().IsSealed; }
+#endif
         }
 
         /// <summary>
@@ -149,7 +177,7 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public bool IsStaticClass
         {
-            get { return Type.IsSealed && Type.IsAbstract; }
+            get { return this.IsSealed && this.IsAbstract; }
         }
 
         /// <summary>

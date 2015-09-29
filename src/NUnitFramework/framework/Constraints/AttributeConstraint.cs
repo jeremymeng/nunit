@@ -21,6 +21,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ***********************************************************************
 using System;
+#if !FEATURE_LEGACY_REFLECTION
+using System.Reflection;
+#endif
 using NUnit.Framework.Compatibility;
 
 namespace NUnit.Framework.Constraints

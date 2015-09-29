@@ -23,6 +23,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !FEATURE_LEGACY_REFLECTION
+using System.Reflection;
+#endif
 using System.Threading;
 using NUnit.Framework.Internal.Commands;
 using NUnit.Framework.Interfaces;
@@ -134,7 +137,7 @@ namespace NUnit.Framework.Internal.Execution
         
         }
 
-        #region Helper Methods
+#region Helper Methods
 
         private bool CheckForCancellation()
         {
@@ -324,11 +327,6 @@ namespace NUnit.Framework.Internal.Execution
             }
         }
 
-        private static bool IsStaticClass(Type type)
-        {
-            return type.IsAbstract && type.IsSealed;
-        }
-
-        #endregion
+#endregion
     }
 }

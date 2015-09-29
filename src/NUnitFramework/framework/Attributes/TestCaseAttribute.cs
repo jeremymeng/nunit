@@ -23,6 +23,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !FEATURE_LEGACY_REFLECTION
+using System.Reflection;
+#endif
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using NUnit.Framework.Internal.Builders;
@@ -383,7 +386,12 @@ namespace NUnit.Framework
 
                 if (convert)
                 {
-                    Type convertTo = targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(Nullable<>) ? 
+#if FEATURE_LEGACY_REFLECTION
+                    bool isGenericType = targetType.IsGenericType;
+#else
+                    bool isGenericType = targetType.GetTypeInfo().IsGenericType;
+#endif
+                    Type convertTo = isGenericType && targetType.GetGenericTypeDefinition() == typeof(Nullable<>) ? 
                         targetType.GetGenericArguments()[0] : targetType;
                     arglist[i] = Convert.ChangeType(arg, convertTo, System.Globalization.CultureInfo.InvariantCulture);
                 }
@@ -395,9 +403,9 @@ namespace NUnit.Framework
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region ITestBuilder Members
+#region ITestBuilder Members
 
         /// <summary>
         /// Construct one or more TestMethods from a given MethodInfo,
@@ -427,6 +435,6 @@ namespace NUnit.Framework
             yield return test;
         }
 
-        #endregion
+#endregion
     }
 }

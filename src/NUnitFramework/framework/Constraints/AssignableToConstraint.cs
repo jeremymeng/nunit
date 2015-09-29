@@ -22,6 +22,9 @@
 // ***********************************************************************
 
 using System;
+#if !FEATURE_LEGACY_REFLECTION
+using System.Reflection;
+#endif
 
 namespace NUnit.Framework.Constraints
 {

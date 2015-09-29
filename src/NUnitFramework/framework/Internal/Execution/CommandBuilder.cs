@@ -144,7 +144,11 @@ namespace NUnit.Framework.Internal.Execution
                 if (node.HasMethods)
                     list.Add(node);
 
+#if FEATURE_LEGACY_REFLECTION
                 fixtureType = fixtureType.BaseType;
+#else
+                fixtureType = fixtureType.GetTypeInfo().BaseType;
+#endif
             }
 
             return list;

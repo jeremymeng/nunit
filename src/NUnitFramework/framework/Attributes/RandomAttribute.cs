@@ -25,6 +25,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+#if !FEATURE_LEGACY_REFLECTION
+using System.Reflection;
+#endif
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 
@@ -39,7 +42,7 @@ namespace NUnit.Framework
         private RandomDataSource _source;
         private int _count;
 
-        #region Constructors
+#region Constructors
 
         /// <summary>
         /// Construct a random set of values appropriate for the Type of the 
@@ -135,9 +138,9 @@ namespace NUnit.Framework
             _source = new SByteDataSource(min, max, count);
         }
 
-        #endregion
+#endregion
 
-        #region IParameterDataSource Interface
+#region IParameterDataSource Interface
 
         /// <summary>
         /// Get the collection of _values to be used as arguments.
@@ -176,8 +179,12 @@ namespace NUnit.Framework
                     _source = new SByteDataSource(_count);
                 else if (parmType == typeof(decimal))
                     _source = new DecimalDataSource(_count);
+#if FEATURE_LEGACY_REFLECTION
                 else if (parmType.IsEnum)
-                    _source = new EnumDataSource(_count);
+#else
+                else if (parmType.GetTypeInfo().IsEnum)
+#endif
+                _source = new EnumDataSource(_count);
                 else // Default
                     _source = new IntDataSource(_count);
             }
@@ -209,11 +216,11 @@ namespace NUnit.Framework
             return false;
         }
 
-        #endregion
+#endregion
 
-        #region Nested DataSource Classes
+#region Nested DataSource Classes
 
-        #region RandomDataSource
+#region RandomDataSource
 
         abstract class RandomDataSource : IParameterDataSource
         {
@@ -265,9 +272,9 @@ namespace NUnit.Framework
             protected abstract T GetNext(T min, T max);
         }
 
-        #endregion
+#endregion
 
-        #region RandomDataConverter
+#region RandomDataConverter
 
         class RandomDataConverter : RandomDataSource
         {
@@ -308,9 +315,9 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #region IntDataSource
+#region IntDataSource
 
         class IntDataSource : RandomDataSource<int>
         {
@@ -329,9 +336,9 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #region UIntDataSource
+#region UIntDataSource
 
         class UIntDataSource : RandomDataSource<uint>
         {
@@ -350,9 +357,9 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #region LongDataSource
+#region LongDataSource
 
         class LongDataSource : RandomDataSource<long>
         {
@@ -371,9 +378,9 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #region ULongDataSource
+#region ULongDataSource
 
         class ULongDataSource : RandomDataSource<ulong>
         {
@@ -392,9 +399,9 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #region ShortDataSource
+#region ShortDataSource
 
         class ShortDataSource : RandomDataSource<short>
         {
@@ -413,9 +420,9 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #region UShortDataSource
+#region UShortDataSource
 
         class UShortDataSource : RandomDataSource<ushort>
         {
@@ -434,9 +441,9 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #region DoubleDataSource
+#region DoubleDataSource
 
         class DoubleDataSource : RandomDataSource<double>
         {
@@ -455,9 +462,9 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #region FloatDataSource
+#region FloatDataSource
 
         class FloatDataSource : RandomDataSource<float>
         {
@@ -476,9 +483,9 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #region ByteDataSource
+#region ByteDataSource
 
         class ByteDataSource : RandomDataSource<byte>
         {
@@ -497,9 +504,9 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #region SByteDataSource
+#region SByteDataSource
 
         class SByteDataSource : RandomDataSource<sbyte>
         {
@@ -518,9 +525,9 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #region EnumDataSource
+#region EnumDataSource
 
         class EnumDataSource : RandomDataSource
         {
@@ -534,7 +541,13 @@ namespace NUnit.Framework
 
             public override IEnumerable GetData(IParameterInfo parameter)
             {
-                Guard.ArgumentValid(parameter.ParameterType.IsEnum, "EnumDataSource requires an enum parameter", "parameter");
+                Guard.ArgumentValid(
+#if FEATURE_LEGACY_REFLECTION
+                    parameter.ParameterType.IsEnum,
+#else
+                    parameter.ParameterType.GetTypeInfo().IsEnum,
+#endif
+                    "EnumDataSource requires an enum parameter", "parameter");
 
                 Randomizer randomizer = Randomizer.GetRandomizer(parameter.ParameterInfo);
                 DataType = parameter.ParameterType;
@@ -544,9 +557,9 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #region DecimalDataSource
+#region DecimalDataSource
 
         // Currently, Randomizer doesn't implement methods for decimal
         // so we use random Ulongs and convert them. This doesn't cover
@@ -568,8 +581,8 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
     }
 }

@@ -51,7 +51,13 @@ namespace NUnit.Framework.Internal.Builders
                 return false;
 
             Type parameterType = parameter.ParameterType;
-            if (parameterType == typeof(bool) || parameterType.IsEnum)
+            if (parameterType == typeof(bool) ||
+#if FEATURE_LEGACY_REFLECTION
+                parameterType.IsEnum
+#else
+                parameterType.GetTypeInfo().IsEnum
+#endif
+                )
                 return true;
 
             Type containingType = method.TypeInfo.Type;
@@ -136,7 +142,11 @@ namespace NUnit.Framework.Internal.Builders
                     datapoints.Add(true);
                     datapoints.Add(false);
                 }
+#if FEATURE_LEGACY_REFLECTION
                 else if (parameterType.IsEnum)
+#else
+                else if (parameterType.GetTypeInfo().IsEnum)
+#endif
                 {
                     foreach (object o in TypeHelper.GetEnumValues(parameterType))
                         datapoints.Add(o);
@@ -173,12 +183,16 @@ namespace NUnit.Framework.Internal.Builders
             if (type.IsArray)
                 return type.GetElementType();
 
+#if FEATURE_LEGACY_REFLECTION
             if (type.IsGenericType && type.Name == "IEnumerable`1")
+#else
+            if (type.GetTypeInfo().IsGenericType && type.Name == "IEnumerable`1")
+#endif
                 return type.GetGenericArguments()[0];
 
             return null;
         }
 
-        #endregion
+#endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="..\..\..\..\dir.props" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,8 +9,8 @@
     <ProjectGuid>{0030AC1C-25B9-44D4-B676-F30606C1912C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>nunit.framework_netcore</RootNamespace>
-    <AssemblyName>nunit.framework-netcore</AssemblyName>
+    <RootNamespace>nunit.framework</RootNamespace>
+    <AssemblyName>nunit.framework</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -25,7 +26,7 @@
     <DefineConstants>TRACE;DEBUG;NUNIT_FRAMEWORK;NETCORE;PORTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\..\..\bin\Debug\dotnet\nunit.framework-netcore.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\..\bin\Debug\dotnet\nunit.framework.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +35,7 @@
     <DefineConstants>TRACE;NUNIT_FRAMEWORK;NETCORE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\..\..\bin\Release\dotnet\nunit.framework-netcore.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\..\bin\Release\dotnet\nunit.framework.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
@@ -81,23 +82,23 @@
     <Compile Include="..\Api\ITestAssemblyRunner.cs" />
     <Compile Include="..\Api\NUnitTestAssemblyRunner.cs" />
     <Compile Include="..\Assert.Comparisons.cs">
-      <DependentUpon>..\Assert.cs</DependentUpon>
+      <DependentUpon>Assert.cs</DependentUpon>
     </Compile>
     <Compile Include="..\Assert.Conditions.cs">
-      <DependentUpon>..\Assert.cs</DependentUpon>
+      <DependentUpon>Assert.cs</DependentUpon>
     </Compile>
     <Compile Include="..\Assert.cs" />
     <Compile Include="..\Assert.Equality.cs">
-      <DependentUpon>..\Assert.cs</DependentUpon>
+      <DependentUpon>Assert.cs</DependentUpon>
     </Compile>
     <Compile Include="..\Assert.Exceptions.cs">
-      <DependentUpon>..\Assert.cs</DependentUpon>
+      <DependentUpon>Assert.cs</DependentUpon>
     </Compile>
     <Compile Include="..\Assert.That.cs">
-      <DependentUpon>..\Assert.cs</DependentUpon>
+      <DependentUpon>Assert.cs</DependentUpon>
     </Compile>
     <Compile Include="..\Assert.Types.cs">
-      <DependentUpon>..\Assert.cs</DependentUpon>
+      <DependentUpon>Assert.cs</DependentUpon>
     </Compile>
     <Compile Include="..\AssertionHelper.cs" />
     <Compile Include="..\Assume.cs" />
