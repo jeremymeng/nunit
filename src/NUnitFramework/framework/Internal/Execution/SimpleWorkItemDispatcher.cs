@@ -35,7 +35,7 @@ namespace NUnit.Framework.Internal.Execution
     /// </summary>
     public class SimpleWorkItemDispatcher : IWorkItemDispatcher
     {
-#if !PORTABLE
+#if !PORTABLE && !NETCORE
         // The first WorkItem to be dispatched, assumed to be top-level item
         private WorkItem _topLevelWorkItem;
 

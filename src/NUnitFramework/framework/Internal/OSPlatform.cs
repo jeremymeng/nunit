@@ -21,7 +21,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ***********************************************************************
 
-#if !PORTABLE
+#if !PORTABLE && !NETCORE
 using Microsoft.Win32;
 using System;
 using System.Runtime.InteropServices;
@@ -37,7 +37,7 @@ namespace NUnit.Framework.Internal
         Version version;
         ProductType product;
 
-        #region Static Members
+#region Static Members
         private static OSPlatform currentPlatform;
 
         
@@ -135,9 +135,9 @@ namespace NUnit.Framework.Internal
             return version;
         }
 #endif
-        #endregion
+#endregion
 
-        #region Members used for Win32NT platform only
+#region Members used for Win32NT platform only
         /// <summary>
         /// Product Type Enumeration used for Windows
         /// </summary>
@@ -183,7 +183,7 @@ namespace NUnit.Framework.Internal
 
         [DllImport("Kernel32.dll")]
         private static extern bool GetVersionEx(ref OSVERSIONINFOEX osvi);
-        #endregion
+#endregion
 
         /// <summary>
         /// Construct from a platform ID and version

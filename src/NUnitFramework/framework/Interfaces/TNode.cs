@@ -23,8 +23,7 @@
 
 using System;
 using System.Xml;
-
-#if PORTABLE || SILVERLIGHT
+#if PORTABLE || SILVERLIGHT || NETCORE
 using System.Xml.Linq;
 #endif
 
@@ -227,7 +226,7 @@ namespace NUnit.Framework.Interfaces
 
         #region Helper Methods
 
-#if PORTABLE || SILVERLIGHT
+#if PORTABLE || SILVERLIGHT || NETCORE
         private static TNode FromXml(XElement xElement)
         {
             TNode tNode = new TNode(xElement.Name.ToString(), xElement.Value);

@@ -20,7 +20,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ***********************************************************************
-#if !PORTABLE
+#if !PORTABLE && !NETCORE
 using System;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
@@ -48,7 +48,7 @@ namespace NUnit.Framework
         /// <param name="platforms">Comma-delimited list of platforms</param>
         public PlatformAttribute(string platforms) : base(platforms) { }
 
-        #region IApplyToTest members
+#region IApplyToTest members
 
         /// <summary>
         /// Causes a test to be skipped if this PlatformAttribute is not satisfied.
@@ -65,7 +65,7 @@ namespace NUnit.Framework
             }
         }
 
-        #endregion
+#endregion
     }
 }
 #endif

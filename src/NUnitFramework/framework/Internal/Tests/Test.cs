@@ -279,7 +279,7 @@ namespace NUnit.Framework.Internal
         /// <returns>A TestResult suitable for this type of test.</returns>
         public abstract TestResult MakeTestResult();
 
-#if PORTABLE
+#if PORTABLE || NETCORE
         /// <summary>
         /// Modify a newly constructed test by applying any of NUnit's common
         /// attributes, based on a supplied ICustomAttributeProvider, which is

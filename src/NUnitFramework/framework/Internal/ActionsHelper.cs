@@ -56,7 +56,7 @@ namespace NUnit.Framework.Internal
             }
         }
 
-#if PORTABLE
+#if PORTABLE || NETCORE
         public static ITestAction[] GetActionsFromAttributeProvider(Assembly attributeProvider)
         {
             if (attributeProvider == null)

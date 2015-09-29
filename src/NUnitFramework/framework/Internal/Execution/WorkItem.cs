@@ -200,7 +200,7 @@ namespace NUnit.Framework.Internal.Execution
         /// </summary>
         public TestResult Result { get; protected set; }
 
-#if !SILVERLIGHT && !NETCF && !PORTABLE
+#if !SILVERLIGHT && !NETCF && !PORTABLE && !NETCORE
         internal ApartmentState TargetApartment
         {
             get 
@@ -296,7 +296,7 @@ namespace NUnit.Framework.Internal.Execution
 #endif
 
 
-#if !SILVERLIGHT && !NETCF && !PORTABLE
+#if !SILVERLIGHT && !NETCF && !PORTABLE && !NETCORE
         private void RunTestOnOwnThread(int timeout, ApartmentState apartment)
         {
             string reason = Test.RequiresThread
