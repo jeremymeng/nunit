@@ -21,11 +21,11 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\bin\Debug\dotnet\</OutputPath>
+    <OutputPath>..\..\..\..\bin\Debug\netcore\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NUNIT_FRAMEWORK;NETCORE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\..\..\bin\Debug\dotnet\nunit.framework.xml</DocumentationFile>
+    <DocumentationFile>..\..\..\..\bin\Debug\netcore\nunit.framework.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

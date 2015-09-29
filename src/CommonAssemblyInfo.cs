@@ -50,6 +50,8 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("Compact Framework 3.5 Debug")]
 #elif PORTABLE
 [assembly: AssemblyConfiguration("Portable Debug")]
+#elif NETCORE
+[assembly: AssemblyConfiguration("Netcore Debug")]
 #else
 [assembly: AssemblyConfiguration("Debug")]
 #endif
@@ -72,6 +74,8 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("Compact Framework 3.5")]
 #elif PORTABLE
 [assembly: AssemblyConfiguration("Portable")]
+#elif NETCORE
+[assembly: AssemblyConfiguration("Netcore")]
 #else
 [assembly: AssemblyConfiguration("")]
 #endif
