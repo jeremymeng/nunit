@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3DFD6E94-4524-4019-AC4C-BF676410E1E5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NUnitLite</RootNamespace>
+    <AssemblyName>nunitlite</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\bin\Debug\netcore\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NUNITLITE;PARALLEL;NETCORE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\bin\Release\netcore\</OutputPath>
+    <DefineConstants>TRACE;NUNITLITE;PARALLEL;NETCORE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="project.json" />
+    <!-- A reference to the entire .NET Framework is automatically included -->
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\ColorConsole.cs">
+      <Link>Runner\ColorConsole.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\ColorConsoleWriter.cs">
+      <Link>Runner\ColorConsoleWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\ColorStyle.cs">
+      <Link>Runner\ColorStyle.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\ConsoleOptions.cs">
+      <Link>Runner\ConsoleOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\DefaultOptionsProvider.cs">
+      <Link>Runner\DefaultOptionsProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\ExtendedTextWrapper.cs">
+      <Link>Runner\ExtendedTextWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\ExtendedTextWriter.cs">
+      <Link>Runner\ExtendedTextWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\IDefaultOptionsProvider.cs">
+      <Link>Runner\IDefaultOptionsProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\Options.cs">
+      <Link>Runner\Options.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\OutputSpecification.cs">
+      <Link>Runner\OutputSpecification.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\StringExtensions.cs">
+      <Link>Runner\StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\StringSplitOptions.cs">
+      <Link>Runner\StringSplitOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\nunit\TestNameParser.cs">
+      <Link>Runner\TestNameParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\FrameworkVersion.cs">
+      <Link>FrameworkVersion.cs</Link>
+    </Compile>
+    <Compile Include="..\Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Runner\AutoRun.cs" />
+    <Compile Include="..\Runner\DebugWriter.cs" />
+    <Compile Include="..\Runner\OutputManager.cs" />
+    <Compile Include="..\Runner\OutputWriters\NUnit2XmlOutputWriter.cs" />
+    <Compile Include="..\Runner\OutputWriters\NUnit3XmlOutputWriter.cs" />
+    <Compile Include="..\Runner\OutputWriters\OutputWriter.cs" />
+    <Compile Include="..\Runner\OutputWriters\TestCaseOutputWriter.cs" />
+    <Compile Include="..\Runner\Program.cs" />
+    <Compile Include="..\Runner\ResultSummary.cs" />
+    <Compile Include="..\Runner\SimpleCategoryExpression.cs" />
+    <Compile Include="..\Runner\TcpWriter.cs" />
+    <Compile Include="..\Runner\TeamCityEventListener.cs" />
+    <Compile Include="..\Runner\TextRunner.cs" />
+    <Compile Include="..\Runner\TextUI.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\framework\nunit.framework-netcore\nunit.framework-netcore.csproj">
+      <Project>{0030ac1c-25b9-44d4-b676-f30606c1912c}</Project>
+      <Name>nunit.framework-netcore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -53,6 +53,10 @@
       <Project>{0030ac1c-25b9-44d4-b676-f30606c1912c}</Project>
       <Name>nunit.framework-netcore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\nunitlite.runner\nunitlite.runner-netcore\nunitlite.runner-netcore.csproj">
+      <Project>{3dfd6e94-4524-4019-ac4c-bf676410e1e5}</Project>
+      <Name>nunitlite.runner-netcore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
