@@ -30,7 +30,9 @@ namespace NUnit.Framework.Internal.Filters
     /// <summary>
     /// SimpleName filter selects tests based on their name
     /// </summary>
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     public class SimpleNameFilter : ValueMatchFilter<string>
     {
         /// <summary>

@@ -30,7 +30,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\Bin\Debug\sl-5.0\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;SL_5_0;NUNITLITE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;SL_5_0;NUNITLITE;FEATURE_LEGACY_REFLECTION</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -40,7 +40,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\Bin\Release\sl-5.0\</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;SL_5_0;NUNITLITE</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;SL_5_0;NUNITLITE;FEATURE_LEGACY_REFLECTION;FEATURE_SERIALIZATION</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>

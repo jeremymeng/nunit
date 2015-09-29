@@ -29,7 +29,9 @@ namespace NUnit.Framework
     /// <summary>
     /// Thrown when an assertion failed.
     /// </summary>
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     public class SuccessException : ResultStateException
     {
         /// <param name="message"></param>
@@ -46,7 +48,7 @@ namespace NUnit.Framework
             base(message, inner)
         { }
 
-#if !NETCF && !SILVERLIGHT && !PORTABLE && !NETCORE
+#if FEATURE_SERIALIZATION
         /// <summary>
         /// Serialization Constructor
         /// </summary>

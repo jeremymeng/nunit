@@ -124,7 +124,7 @@ namespace NUnit.Framework.Interfaces
         /// <returns>A TNode</returns>
         public static TNode FromXml(string xmlText)
         {
-#if PORTABLE || SILVERLIGHT
+#if PORTABLE || SILVERLIGHT || NETCORE
             return FromXml(XElement.Parse(xmlText));
 #else
             var doc = new XmlDocument();

@@ -426,7 +426,7 @@ namespace NUnit.Framework.Constraints
 
         #region BinarySerializable
 
-#if !NETCF && !SILVERLIGHT && !PORTABLE && !NETCORE
+#if FEATURE_SERIALIZATION
         /// <summary>
         /// Returns a constraint that tests whether an object graph is serializable in binary format.
         /// </summary>

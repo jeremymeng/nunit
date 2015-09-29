@@ -33,7 +33,9 @@ namespace NUnit.Framework.Internal
     /// The filter applies when running the test, after it has been
     /// loaded, since this is the only time an ITest exists.
     /// </summary>
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     public abstract class TestFilter : ITestFilter
     {
         /// <summary>
@@ -194,7 +196,9 @@ namespace NUnit.Framework.Internal
         /// Nested class provides an empty filter - one that always
         /// returns true when called. It never matches explicitly.
         /// </summary>
-        [Serializable]
+#if FEATURE_SERIALIZATION
+    [Serializable]
+#endif
         private class EmptyFilter : TestFilter
         {
             public override bool Match( ITest test )

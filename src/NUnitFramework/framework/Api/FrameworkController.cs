@@ -47,7 +47,9 @@ namespace NUnit.Framework.Api
     /// other actions. The driver may support other actions, such as
     /// reload on run, by combining these calls.
     /// </summary>
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     public class FrameworkController : LongLivedMarshalByRefObject
     {
 #if !PORTABLE && !SILVERLIGHT && !NETCORE
@@ -57,7 +59,7 @@ namespace NUnit.Framework.Api
         // Pre-loaded test assembly, if passed in constructor
         private Assembly _testAssembly;
 
-        #region Constructors
+#region Constructors
 
         /// <summary>
         /// Construct a FrameworkController using the default builder and runner.
@@ -143,9 +145,9 @@ namespace NUnit.Framework.Api
             }
         }
 
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
 
         /// <summary>
         /// Gets the ITestAssemblyBuilder used by this controller instance.
@@ -174,9 +176,9 @@ namespace NUnit.Framework.Api
         /// </summary>
         public IDictionary Settings { get; private set; }
 
-        #endregion
+#endregion
 
-        #region Private Action Methods Used by Nested Classes
+#region Private Action Methods Used by Nested Classes
 
         private void LoadTests(ICallbackEventHandler handler)
         {
@@ -232,11 +234,11 @@ namespace NUnit.Framework.Api
             handler.RaiseCallbackEvent(count.ToString());
         }
 
-        #endregion
+#endregion
 
-        #region Nested Action Classes
+#region Nested Action Classes
 
-        #region TestContollerAction
+#region TestContollerAction
 
         /// <summary>
         /// FrameworkControllerAction is the base class for all actions
@@ -246,9 +248,9 @@ namespace NUnit.Framework.Api
         {
         }
 
-        #endregion
+#endregion
 
-        #region LoadTestsAction
+#region LoadTestsAction
 
         /// <summary>
         /// LoadTestsAction loads a test into the FrameworkController
@@ -266,9 +268,9 @@ namespace NUnit.Framework.Api
             }
         }
 
-        #endregion
+#endregion
 
-        #region ExploreTestsAction
+#region ExploreTestsAction
 
         /// <summary>
         /// ExploreTestsAction returns info about the tests in an assembly
@@ -287,9 +289,9 @@ namespace NUnit.Framework.Api
             }
         }
 
-        #endregion
+#endregion
 
-        #region CountTestsAction
+#region CountTestsAction
 
         /// <summary>
         /// CountTestsAction counts the number of test cases in the loaded TestSuite
@@ -309,9 +311,9 @@ namespace NUnit.Framework.Api
             }
         }
 
-        #endregion
+#endregion
 
-        #region RunTestsAction
+#region RunTestsAction
 
         /// <summary>
         /// RunTestsAction runs the loaded TestSuite held by the FrameworkController.
@@ -330,9 +332,9 @@ namespace NUnit.Framework.Api
             }
         }
 
-        #endregion
+#endregion
 
-        #region RunAsyncAction
+#region RunAsyncAction
 
         /// <summary>
         /// RunAsyncAction initiates an asynchronous test run, returning immediately
@@ -351,9 +353,9 @@ namespace NUnit.Framework.Api
             }
         }
 
-        #endregion
+#endregion
 
-        #region StopRunAction
+#region StopRunAction
 
         /// <summary>
         /// StopRunAction stops an ongoing run.
@@ -374,8 +376,8 @@ namespace NUnit.Framework.Api
             }
         }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
     }
 }

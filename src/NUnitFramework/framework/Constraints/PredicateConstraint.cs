@@ -23,6 +23,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !FEATURE_LEGACY_REFLECTION
+using System.Reflection;
+#endif
 
 namespace NUnit.Framework.Constraints
 {
@@ -49,9 +52,14 @@ namespace NUnit.Framework.Constraints
         {
             get
             {
-                return predicate.Method.Name.StartsWith("<")
+#if FEATURE_LEGACY_REFLECTION
+                var name = predicate.Method.Name;
+#else
+                var name = predicate.GetMethodInfo().Name;
+#endif
+                return name.StartsWith("<")
                     ? "value matching lambda expression"
-                    : "value matching " + predicate.Method.Name;
+                    : "value matching " + name;
             }
         }
 

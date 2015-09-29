@@ -44,6 +44,9 @@ namespace NUnit.Framework.Internal
             CompareOptions options = ignoreCase ? CompareOptions.IgnoreCase : CompareOptions.None;
 #if NETCF
             return string.Compare(strA, strB, ignoreCase);
+#elif NETCORE
+            StringComparer comparer = CultureInfo.CurrentCulture.CompareInfo.GetStringComparer(options);
+            return comparer.Compare(strA, strB);
 #else
             return string.Compare(strA, strB, CultureInfo.CurrentCulture, options);
 #endif

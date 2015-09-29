@@ -34,7 +34,9 @@ namespace NUnit.Framework.Internal.Filters
     /// based on their categories.
     /// </summary>
     /// 
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     public class CategoryFilter : TestFilter
     {
         List<string> categories = new List<string>();

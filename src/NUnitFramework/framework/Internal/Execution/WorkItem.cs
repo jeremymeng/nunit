@@ -228,13 +228,13 @@ namespace NUnit.Framework.Internal.Execution
             // Timeout set on this test
             if (Test.Properties.ContainsKey(PropertyNames.Timeout))
                 timeout = (int)Test.Properties.Get(PropertyNames.Timeout);
-            
+
 #if SILVERLIGHT || NETCF
             if (Test.RequiresThread || Test is TestMethod && timeout > 0)
                 RunTestOnOwnThread(timeout);
             else
                 RunTest();
-#elif PORTABLE
+#elif PORTABLE || NETCORE
             RunTest();
 #else
             ApartmentState currentApartment = Thread.CurrentThread.GetApartmentState();
@@ -356,7 +356,7 @@ namespace NUnit.Framework.Internal.Execution
             _context.EstablishExecutionEnvironment();
 
             _state = WorkItemState.Running;
-#if PORTABLE
+#if PORTABLE || NETCORE
             PerformWork();
 #else
             try

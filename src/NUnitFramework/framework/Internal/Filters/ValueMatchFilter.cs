@@ -32,7 +32,9 @@ namespace NUnit.Framework.Internal.Filters
     /// is expected to be contained in the test.
     /// </summary>
     /// <typeparam name="T">The Type of the value</typeparam>
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     public abstract class ValueMatchFilter<T> : TestFilter
     {
         private List<T> _values = new List<T>();

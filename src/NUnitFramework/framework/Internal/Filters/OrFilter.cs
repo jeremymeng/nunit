@@ -27,12 +27,14 @@ using NUnit.Framework.Interfaces;
 
 namespace NUnit.Framework.Internal.Filters
 {
-	/// <summary>
-	/// Combines multiple filters so that a test must pass one 
-	/// of them in order to pass this filter.
-	/// </summary>
-	[Serializable]
-	public class OrFilter : TestFilter
+    /// <summary>
+    /// Combines multiple filters so that a test must pass one 
+    /// of them in order to pass this filter.
+    /// </summary>
+#if FEATURE_SERIALIZATION
+    [Serializable]
+#endif
+    public class OrFilter : TestFilter
 	{
 		private List<ITestFilter> filters = new List<ITestFilter>();
 

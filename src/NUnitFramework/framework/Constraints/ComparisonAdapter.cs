@@ -24,6 +24,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !FEATURE_LEGACY_REFLECTION
+using System.Reflection;
+#endif
 
 namespace NUnit.Framework.Constraints
 {

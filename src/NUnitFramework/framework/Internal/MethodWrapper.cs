@@ -165,7 +165,13 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public T[] GetCustomAttributes<T>(bool inherit) where T : class
         {
+#if FEATURE_LEGACY_REFLECTION
             return (T[])MethodInfo.GetCustomAttributes(typeof(T), inherit);
+#else
+            var attributes = MethodInfo.GetCustomAttributes(typeof(T), inherit);
+            var enumerable = System.Linq.Enumerable.Select(attributes, a => (object)a);
+            return (T[])System.Linq.Enumerable.ToArray(enumerable);
+#endif
         }
 
         /// <summary>
@@ -195,6 +201,6 @@ namespace NUnit.Framework.Internal
             return MethodInfo.Name;
         }
 
-        #endregion
+#endregion
     }
 }

@@ -71,7 +71,11 @@ namespace NUnit.Framework.Internal.Builders
             if (fixture.RunState != RunState.NotRunnable)
                 CheckTestFixtureIsValid(fixture);
 
+#if FEATURE_LEGACY_REFLECTION
             fixture.ApplyAttributesToTest(typeInfo.Type);
+#else
+            fixture.ApplyAttributesToTest(typeInfo.Type.GetTypeInfo());
+#endif
 
             AddTestCasesToFixture(fixture);
 
@@ -145,16 +149,20 @@ namespace NUnit.Framework.Internal.Builders
             if (fixture.RunState != RunState.NotRunnable)
                 CheckTestFixtureIsValid(fixture);
 
+#if FEATURE_LEGACY_REFLECTION
             fixture.ApplyAttributesToTest(typeInfo.Type);
+#else
+            fixture.ApplyAttributesToTest(typeInfo.Type.GetTypeInfo());
+#endif
 
             AddTestCasesToFixture(fixture);
 
             return fixture;
         }
 
-        #endregion
+#endregion
 
-        #region Helper Methods
+#region Helper Methods
 
         /// <summary>
         /// Method to add test cases to the newly constructed fixture.
@@ -235,6 +243,6 @@ namespace NUnit.Framework.Internal.Builders
             }
         }
 
-        #endregion
+#endregion
     }
 }

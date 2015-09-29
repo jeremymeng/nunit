@@ -217,7 +217,13 @@ namespace NUnit.Framework.Internal
         /// </summary>
         public T[] GetCustomAttributes<T>(bool inherit) where T : class
         {
+#if FEATURE_LEGACY_REFLECTION
             return (T[])Type.GetCustomAttributes(typeof(T), inherit);
+#else
+            var attributes = Type.GetTypeInfo().GetCustomAttributes(typeof(T), inherit);
+            var enumerable = System.Linq.Enumerable.Select(attributes, a => (object)a);
+            return (T[])System.Linq.Enumerable.ToArray(enumerable);
+#endif
         }
 
         /// <summary>
@@ -228,7 +234,11 @@ namespace NUnit.Framework.Internal
         /// <returns></returns>
         public bool IsDefined<T>(bool inherit)
         {
+#if FEATURE_LEGACY_REFLECTION
             return Type.IsDefined(typeof(T), inherit);
+#else
+            return Type.GetTypeInfo().IsDefined(typeof(T), inherit);
+#endif
         }
 
         /// <summary>

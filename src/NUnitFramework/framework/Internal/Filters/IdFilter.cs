@@ -30,7 +30,9 @@ namespace NUnit.Framework.Internal.Filters
     /// <summary>
     /// IdFilter selects tests based on their id
     /// </summary>
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     public class IdFilter : ValueMatchFilter<string>
     {
         /// <summary>

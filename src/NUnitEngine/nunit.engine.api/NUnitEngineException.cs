@@ -22,7 +22,9 @@
 // ***********************************************************************
 
 using System;
+#if FEATURE_SERIALIZATION
 using System.Runtime.Serialization;
+#endif
 
 namespace NUnit.Engine
 {
@@ -46,9 +48,11 @@ namespace NUnit.Engine
         /// <param name="innerException"></param>
         public NUnitEngineException(string message, Exception innerException) : base(message, innerException) { }
 
+#if FEATURE_SERIALIZATION
         /// <summary>
         /// Serialization constructor
         /// </summary>
         public NUnitEngineException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#endif  
     }
 }

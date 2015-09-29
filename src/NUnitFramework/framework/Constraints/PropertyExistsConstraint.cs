@@ -73,7 +73,7 @@ namespace NUnit.Framework.Constraints
                 actualType = actual.GetType();
 
             PropertyInfo property = actualType.GetProperty(name,
-#if PORTABLE
+#if PORTABLE || NETCORE
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 #else
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty);

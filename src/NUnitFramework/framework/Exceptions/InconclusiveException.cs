@@ -30,7 +30,9 @@ namespace NUnit.Framework
     /// <summary>
     /// Thrown when a test executes inconclusively.
     /// </summary>
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     public class InconclusiveException : ResultStateException
     {
         /// <param name="message">The error message that explains 
@@ -48,7 +50,7 @@ namespace NUnit.Framework
             base(message, inner)
         { }
 
-#if !NETCF && !SILVERLIGHT && !PORTABLE && !NETCORE
+#if FEATURE_SERIALIZATION
         /// <summary>
         /// Serialization Constructor
         /// </summary>

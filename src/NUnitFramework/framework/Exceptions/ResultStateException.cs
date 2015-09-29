@@ -30,7 +30,9 @@ namespace NUnit.Framework
     /// <summary>
     /// Abstract base for Exceptions that terminate a test and provide a ResultState.
     /// </summary>
+#if FEATURE_SERIALIZATION
     [Serializable]
+#endif
     public abstract class ResultStateException : Exception
     {
         /// <param name="message">The error message that explains 
@@ -46,7 +48,7 @@ namespace NUnit.Framework
             base(message, inner) 
         {}
 
-#if !NETCF && !SILVERLIGHT && !PORTABLE && !NETCORE
+#if FEATURE_SERIALIZATION
         /// <summary>
         /// Serialization Constructor
         /// </summary>

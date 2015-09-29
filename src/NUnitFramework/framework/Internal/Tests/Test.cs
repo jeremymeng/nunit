@@ -299,13 +299,13 @@ namespace NUnit.Framework.Internal
         /// </summary>
         /// <param name="provider">An object implementing ICustomAttributeProvider</param>
         public void ApplyAttributesToTest(ICustomAttributeProvider provider)
-#endif
+#endif // PORTABLE
         {
             foreach (IApplyToTest iApply in provider.GetCustomAttributes(typeof(IApplyToTest), true))
                 iApply.ApplyToTest(this);
         }
 
-#if PORTABLE
+#if PORTABLE || NETCORE
         /// <summary>
         /// Modify a newly constructed test by applying any of NUnit's common
         /// attributes, based on a supplied ICustomAttributeProvider, which is
@@ -316,20 +316,23 @@ namespace NUnit.Framework.Internal
         /// <param name="provider">An object deriving from MemberInfo</param>
         public void ApplyAttributesToTest(Assembly provider)
         {
-            foreach (IApplyToTest iApply in provider.GetCustomAttributes(typeof(IApplyToTest), true))
+            foreach (IApplyToTest iApply in provider.GetCustomAttributes(typeof(IApplyToTest)
+#if !NETCORE
+                , true
+#endif
+                ))
                 iApply.ApplyToTest(this);
         }
-#endif
+#endif // PORTABLE
+#endregion
 
-        #endregion
+                #region Protected Methods
 
-        #region Protected Methods
-
-        /// <summary>
-        /// Add standard attributes and members to a test node.
-        /// </summary>
-        /// <param name="thisNode"></param>
-        /// <param name="recursive"></param>
+                /// <summary>
+                /// Add standard attributes and members to a test node.
+                /// </summary>
+                /// <param name="thisNode"></param>
+                /// <param name="recursive"></param>
         protected void PopulateTestNode(TNode thisNode, bool recursive)
         {
             thisNode.AddAttribute("id", this.Id.ToString());
@@ -345,9 +348,9 @@ namespace NUnit.Framework.Internal
                 Properties.AddToXml(thisNode, recursive);
         }
 
-        #endregion
+#endregion
 
-        #region IXmlNodeBuilder Members
+#region IXmlNodeBuilder Members
 
         /// <summary>
         /// Returns the Xml representation of the test
@@ -368,9 +371,9 @@ namespace NUnit.Framework.Internal
         /// <returns></returns>
         public abstract TNode AddToXml(TNode parentNode, bool recursive);
 
-        #endregion
+#endregion
 
-        #region IComparable Members
+#region IComparable Members
 
         /// <summary>
         /// Compares this test to another test for sorting purposes
@@ -387,6 +390,6 @@ namespace NUnit.Framework.Internal
             return this.FullName.CompareTo(other.FullName);
         }
 
-        #endregion
+#endregion
     }
 }

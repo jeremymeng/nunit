@@ -469,7 +469,7 @@ namespace Mono.Options
         }
     }
 
-#if !PORTABLE
+#if FEATURE_SERIALIZATION
     [Serializable]
 #endif
     public class OptionException : Exception
@@ -492,7 +492,7 @@ namespace Mono.Options
             this.option = optionName;
         }
 
-#if !NETCF && !SILVERLIGHT && !PORTABLE
+#if FEATURE_SERIALIZATION
         protected OptionException (SerializationInfo info, StreamingContext context)
             : base (info, context)
         {
@@ -504,7 +504,7 @@ namespace Mono.Options
             get {return this.option;}
         }
 
-#if !NETCF && !SILVERLIGHT && !PORTABLE
+#if FEATURE_SERIALIZATION
         [SecurityPermission (SecurityAction.LinkDemand, SerializationFormatter = true)]
         public override void GetObjectData (SerializationInfo info, StreamingContext context)
         {

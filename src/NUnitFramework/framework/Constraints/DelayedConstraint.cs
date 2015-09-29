@@ -88,7 +88,8 @@ namespace NUnit.Framework.Constraints
                 while ((now = Stopwatch.GetTimestamp()) < delayEnd)
                 {
                     if (nextPoll > now)
-                        Thread.Sleep((int)TimestampDiff(delayEnd < nextPoll ? delayEnd : nextPoll, now).TotalMilliseconds);
+                        WaitForDelay((int)TimestampDiff(delayEnd < nextPoll ? delayEnd : nextPoll, now).TotalMilliseconds);
+
                     nextPoll = TimestampOffset(now, TimeSpan.FromMilliseconds(pollingInterval));
 
                     ConstraintResult result = baseConstraint.ApplyTo(actual);
@@ -97,7 +98,7 @@ namespace NUnit.Framework.Constraints
                 }
             }
             if ((now = Stopwatch.GetTimestamp()) < delayEnd)
-                Thread.Sleep((int)TimestampDiff(delayEnd, now).TotalMilliseconds);
+                WaitForDelay((int)TimestampDiff(delayEnd, now).TotalMilliseconds);
 
             return new ConstraintResult(this, actual, baseConstraint.ApplyTo(actual).IsSuccess);
         }
@@ -119,7 +120,7 @@ namespace NUnit.Framework.Constraints
                 while ((now = Stopwatch.GetTimestamp()) < delayEnd)
                 {
                     if (nextPoll > now)
-                        Thread.Sleep((int)TimestampDiff(delayEnd < nextPoll ? delayEnd : nextPoll, now).TotalMilliseconds);
+                        WaitForDelay((int)TimestampDiff(delayEnd < nextPoll ? delayEnd : nextPoll, now).TotalMilliseconds);
                     nextPoll = TimestampOffset(now, TimeSpan.FromMilliseconds(pollingInterval));
 
                     actual = InvokeDelegate(del);
@@ -130,14 +131,14 @@ namespace NUnit.Framework.Constraints
                         if (result.IsSuccess)
                             return new ConstraintResult(this, actual, true);
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         // Ignore any exceptions when polling
                     }
                 }
             }
             if ((now = Stopwatch.GetTimestamp()) < delayEnd)
-                Thread.Sleep((int)TimestampDiff(delayEnd, now).TotalMilliseconds);
+                WaitForDelay((int)TimestampDiff(delayEnd, now).TotalMilliseconds);
 
             actual = InvokeDelegate(del);
             return new ConstraintResult(this, actual, baseConstraint.ApplyTo(actual).IsSuccess);
@@ -172,7 +173,7 @@ namespace NUnit.Framework.Constraints
                 while ((now = Stopwatch.GetTimestamp()) < delayEnd)
                 {
                     if (nextPoll > now)
-                        Thread.Sleep((int)TimestampDiff(delayEnd < nextPoll ? delayEnd : nextPoll, now).TotalMilliseconds);
+                        WaitForDelay((int)TimestampDiff(delayEnd < nextPoll ? delayEnd : nextPoll, now).TotalMilliseconds);
                     nextPoll = TimestampOffset(now, TimeSpan.FromMilliseconds(pollingInterval));
 
                     try
@@ -181,14 +182,14 @@ namespace NUnit.Framework.Constraints
                         if (result.IsSuccess)
                             return new ConstraintResult(this, actual, true);
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         // Ignore any exceptions when polling
                     }
                 }
             }
             if ((now = Stopwatch.GetTimestamp()) < delayEnd)
-                Thread.Sleep((int)TimestampDiff(delayEnd, now).TotalMilliseconds);
+                WaitForDelay((int)TimestampDiff(delayEnd, now).TotalMilliseconds);
 
             return new ConstraintResult(this, actual, baseConstraint.ApplyTo(actual).IsSuccess);
         }
@@ -221,6 +222,19 @@ namespace NUnit.Framework.Constraints
         private static TimeSpan TimestampDiff(long timestamp1, long timestamp2)
         {
             return TimeSpan.FromSeconds((double)(timestamp1 - timestamp2) / Stopwatch.Frequency);
+        }
+
+        /// <summary>
+        /// Wait for a delay.
+        /// </summary>
+        /// <param name="delayInMilliseconds">the length of the delay in milliseconds</param>
+        private static void WaitForDelay(int delayInMilliseconds)
+        {
+#if !NETCORE
+            Thread.Sleep(delayInMilliseconds);
+#else
+            System.Threading.Tasks.Task.Delay(delayInMilliseconds).Wait();
+#endif
         }
     }
 }

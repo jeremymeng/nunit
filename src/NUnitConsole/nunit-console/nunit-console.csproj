@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NUNIT_CONSOLE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NUNIT_CONSOLE;FEATURE_LEGACY_REFLECTION;FEATURE_SERIALIZATION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
@@ -30,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NUNIT_CONSOLE</DefineConstants>
+    <DefineConstants>TRACE;NUNIT_CONSOLE;FEATURE_LEGACY_REFLECTION;FEATURE_SERIALIZATION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Commandlineparameters>nunit.engine.tests.dll -process:Single</Commandlineparameters>

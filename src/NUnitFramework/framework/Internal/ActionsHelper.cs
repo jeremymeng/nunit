@@ -62,7 +62,11 @@ namespace NUnit.Framework.Internal
             if (attributeProvider == null)
                 return new ITestAction[0];
 
+#if FEATURE_LEGACY_REFLECTION
             var actions = new List<ITestAction>((ITestAction[])attributeProvider.GetCustomAttributes(typeof(ITestAction), false));
+#else
+            var actions = new List<ITestAction>((ITestAction[])attributeProvider.GetCustomAttributes(typeof(ITestAction)));
+#endif
             actions.Sort(SortByTargetDescending);
 
             return actions.ToArray();
@@ -100,11 +104,17 @@ namespace NUnit.Framework.Internal
 
             Type[] declaredInterfaces = GetDeclaredInterfaces(type);
 
+#if FEATURE_LEGACY_REFLECTION
             foreach(Type interfaceType in declaredInterfaces)
                 actions.AddRange(GetActionsFromAttributeProvider(interfaceType));
 
             actions.AddRange(GetActionsFromAttributeProvider(type));
+#else
+            foreach (Type interfaceType in declaredInterfaces)
+                actions.AddRange(GetActionsFromAttributeProvider(interfaceType.GetTypeInfo()));
 
+            actions.AddRange(GetActionsFromAttributeProvider(type.GetTypeInfo()));
+#endif
             return actions.ToArray();
         }
 

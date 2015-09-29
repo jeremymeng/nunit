@@ -24,7 +24,7 @@
 namespace NUnit.Framework.Internal
 {
     using System;
-#if !NETCF
+#if FEATURE_SERIALIZATION
     using System.Runtime.Serialization;
 #endif
 
@@ -32,7 +32,7 @@ namespace NUnit.Framework.Internal
     /// InvalidTestFixtureException is thrown when an appropriate test
     /// fixture constructor using the provided arguments cannot be found.
     /// </summary>
-#if !NETCF
+#if FEATURE_SERIALIZATION
     [Serializable]
 #endif
     public class InvalidTestFixtureException : Exception
@@ -57,7 +57,7 @@ namespace NUnit.Framework.Internal
         public InvalidTestFixtureException(string message, Exception inner) : base(message, inner)
         { }
 
-#if !NETCF && !SILVERLIGHT && !PORTABLE && !NETCORE
+#if FEATURE_SERIALIZATION
         /// <summary>
         /// Serialization Constructor
         /// </summary>
