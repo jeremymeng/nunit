@@ -1,0 +1,40 @@
+﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Set default Configuration and Platform -->
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' ==''">Debug</Configuration>
+    <Platform Condition="'$(Platform)'==''">AnyCPU</Platform>
+  </PropertyGroup>
+
+  <!-- Setup Default symbol and optimization for Configuration -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug-NetCore'">
+    <DebugSymbols Condition="'$(DebugSymbols)' == ''">true</DebugSymbols>
+    <Optimize Condition="'$(Optimize)' == ''">false</Optimize>
+    <DebugType Condition="'$(DebugType)' == ''">full</DebugType>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE;STANDALONEBUILD</DefineConstants>
+    <NetCoreBuild>true</NetCoreBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release-NetCore'">
+    <DebugSymbols Condition="'$(DebugSymbols)' == ''">true</DebugSymbols>
+    <Optimize Condition="'$(Optimize)' == ''">true</Optimize>
+    <DebugType Condition="'$(DebugType)' == ''">pdbonly</DebugType>
+    <DefineConstants>$(DefineConstants);TRACE;STANDALONEBUILD</DefineConstants>
+    <NetCoreBuild>true</NetCoreBuild>
+  </PropertyGroup>
+
+  <!-- .NET Core build support -->
+  <PropertyGroup Condition="'$(NetCoreBuild)' == 'true'">
+    <NetCoreSurface>true</NetCoreSurface>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(NetCoreSurface)' != 'true'">
+    <DefineConstants>$(DefineConstants);FEATURE_LEGACY_REFLECTION</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(NetCoreSurface)' == 'true'">
+
+    <!-- Indicates whether CultureInfo has setters for the CurrentCulture and CurrentUICulture properties.
+         If not, then the corresponding properties on Thread (which aren't in .NET Core) need to be used. -->
+    <DefineConstants>$(DefineConstants);FEATURE_CULTUREINFO_SETTERS</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_PROCESSSTARTINFO_ENVIRONMENT</DefineConstants>
+  </PropertyGroup>
+
+</Project>
